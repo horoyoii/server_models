@@ -146,3 +146,9 @@
 ## Reference  
 
 http://www.cs.ucr.edu/~makho001/masoud/cs164/fork.pdf
+
+http://byteliu.com/2019/05/08/LINUX-%E2%80%93-IO-MULTIPLEXING-%E2%80%93-SELECT-VS-POLL-VS-EPOLL/
+
+https://jongmin92.github.io/2019/02/28/Java/java-with-non-blocking-io/#%EB%A9%80%ED%8B%B0%ED%94%8C%EB%A0%89%EC%8B%B1-%EA%B8%B0%EB%B0%98%EC%9D%98-%EB%8B%A4%EC%A4%91-%EC%A0%91%EC%86%8D-%EC%84%9C%EB%B2%84
+
+
