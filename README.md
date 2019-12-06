@@ -1,9 +1,14 @@
 # Server models   
 
- * This repository is for the variable server models and to show how these can be implemented based on Linux.  
+ * This repository is for introducing the variable server models and to show how these can be implemented based on Linux.  
  1. Iteratvie server  [code](/Iterative_server/Iteratvie_server.cpp)
  2. Multi-process based server [code](/Multi-process_server/Multi_process_server.cpp)  
- 
+ 3. IO-Multiplexing server with select() [code](/IO-multiplexing_server_select/select_server.cpp)
+ 4. Multi-Thread based server without thread-pool [code](/Multi-thread_server/Multi-thread_server.cpp)
+
+
+
+
 
 # 1. Iterative server  
 
@@ -52,7 +57,10 @@
 # 3. IO Multiplexing Model with select() system call.  
 
 ### Abstract  
-
+ * The server uses a single thread to mamange all connections.
+    it uses select() or epoll() system call to wait for the events on all connectinos   
+    When select() delivers one or more events, the server's main loop invokes handlers for each ready connection.  
+    
  * I/O Multiplexing means that single process or thread can handle all of the read and write.  
  * The reason why a single process(or thread) can handle only one client request is that I/O functions are blocking.  
    So 입출력 데이터가 준비될 때까지 무한정 blocking되어 다른 여러 클라이언트의 입출력을 처리할 수 없었기 때문이다.  
