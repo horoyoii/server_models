@@ -7,9 +7,10 @@
 #include<sys/wait.h>
 
 #define BUF_SIZE 1<<10
-#define N 10
+//#define N 10
 int main(int argc, char* argv[]){
-    
+    int N = atoi(argv[3]);
+
     pid_t pid;
     for(int i=0;i<N;i++){
         pid = fork();   
@@ -29,8 +30,6 @@ int main(int argc, char* argv[]){
         return 0;
     }
 
-
-    printf("child pid[%d] ---\n", getpid());
 
     int sock;
     char message[BUF_SIZE] = "abcde";
@@ -57,13 +56,13 @@ int main(int argc, char* argv[]){
     if(connect(sock, (struct sockaddr*)&serv_adr, sizeof(serv_adr)) == -1)
         perror("error : ");
 
-    printf("pid[%d] : send data to server\n", getpid());    
+    //printf("pid[%d] : send data to server\n", getpid());    
     write(sock, message, strlen(message));
 
     
     str_len = read(sock, message, BUF_SIZE-1);
 
-    printf("pid[%d] msg : %s\n", getpid(), message);
+    printf("respone - pid[%d] msg : %s\n", getpid(), message);
 
    
     close(sock); 
