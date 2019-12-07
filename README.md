@@ -1,9 +1,14 @@
 # Server models   
 
- * This repository is for the variable server models and to show how these can be implemented based on Linux.  
+ * This repository is for introducing the variable server models and to show how these can be implemented based on Linux.  
  1. Iteratvie server  [code](/Iterative_server/Iteratvie_server.cpp)
  2. Multi-process based server [code](/Multi-process_server/Multi_process_server.cpp)  
- 
+ 3. IO-Multiplexing server with select() [code](/IO-multiplexing_server_select/select_server.cpp)
+ 4. Multi-Thread based server without thread-pool [code](/Multi-thread_server/Multi-thread_server.cpp)
+
+
+
+
 
 # 1. Iterative server  
 
@@ -52,7 +57,10 @@
 # 3. IO Multiplexing Model with select() system call.  
 
 ### Abstract  
-
+ * The server uses a single thread to mamange all connections.
+    it uses select() or epoll() system call to wait for the events on all connectinos   
+    When select() delivers one or more events, the server's main loop invokes handlers for each ready connection.  
+    
  * I/O Multiplexing means that single process or thread can handle all of the read and write.  
  * The reason why a single process(or thread) can handle only one client request is that I/O functions are blocking.  
    So 입출력 데이터가 준비될 때까지 무한정 blocking되어 다른 여러 클라이언트의 입출력을 처리할 수 없었기 때문이다.  
@@ -114,6 +122,52 @@
 * for loop : 이후 어떤 소캣이 읽힐 준비가 되었는지 for 문을 돌면서 확인하고 이를 대상으로 I/O 를 수행한다.  
 
 
+# 4. Multi-thread model without thread-pool.  
+
+## Abstract  
+
+  * This model works very much like a multi-process based model.  
+  * Whenever a new connection arrives via Listening socket, a main process craetes a new thread.  
+  * Then a newly craeted thread gets a connected socket fd from its parent and processes its job.  
+  ![스크린샷, 2019-12-06 13-48-45](https://user-images.githubusercontent.com/34915108/70296865-26b2c100-182f-11ea-9c71-13d361759de7.png)
+
+## How to implement  
+    whlie(1){
+        cli_sock = accept(serv_sock, (struct sockaddr*)&cli_adr, (socklen_t*)&cli_adr_sz);
+        printf("client connected\n");
+
+        /** 
+        * Main thread needs to wait for new client connection so uses the detach mode, not join.
+        *   
+        * pass the connected socket fd to a craeted thread.
+        */  
+        pthread_create(&tid, NULL, handleRequest, (void*)&cli_sock);
+        pthread_detach(tid);  
+    }
+
+## Strength over multi-process based server  
+
+1) Multi-process servers can suffer from context-switching overhead and IPC
+  
+
+
+
+
+# 5. Multi-thread model with thread-pool.  
+
+## Abstract  
+
+ * whenever a new request arrives, a server creates a new thread for every single request,  
+   which is a overhead that spend more time and consume more resource in creating and destroying threads than procesing actual requests.
+
+  * But actually each created thread does the short job.  
+  * So a thread pool makes it possible to reuse previously created threads to execute tasks.  
+    Since threads are already existing when new request arrives, the delay introduced by thread creation is eliminated.  
+    
+  * the number of threads in thread pool is limited. So handling a lot of requests needs coordination with help of some kind of QUEUE.  
+  
+  
+  
  
 
 
@@ -150,5 +204,9 @@ http://www.cs.ucr.edu/~makho001/masoud/cs164/fork.pdf
 http://byteliu.com/2019/05/08/LINUX-%E2%80%93-IO-MULTIPLEXING-%E2%80%93-SELECT-VS-POLL-VS-EPOLL/
 
 https://jongmin92.github.io/2019/02/28/Java/java-with-non-blocking-io/#%EB%A9%80%ED%8B%B0%ED%94%8C%EB%A0%89%EC%8B%B1-%EA%B8%B0%EB%B0%98%EC%9D%98-%EB%8B%A4%EC%A4%91-%EC%A0%91%EC%86%8D-%EC%84%9C%EB%B2%84
+
+https://www.usenix.org/legacy/publications/library/proceedings/osdi99/full_papers/banga/banga_html/node3.html
+
+
 
 
