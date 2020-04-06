@@ -1,12 +1,17 @@
 # Server models   
 
- * This repository is for introducing the variable server models and to show how these can be implemented based on Linux.  
+ * This repository is for introducing a variety of server models and to show how these can be implemented based on Linux.  
  1. Iteratvie server  [code](/Iterative_server/Iteratvie_server.cpp)
  2. Multi-process based server [code](/Multi-process_server/Multi_process_server.cpp)  
  3. IO-Multiplexing server with select() [code](/IO-multiplexing_server_select/select_server.cpp)
  4. Multi-Thread based server without thread-pool [code](/Multi-thread_server/Multi-thread_server.cpp)
 
 
+### Server examples in JAVA  
+
+[1. SingleThreaded server](http://tutorials.jenkov.com/java-multithreaded-servers/singlethreaded-server.html)  
+[2. MultiThreaded server](http://tutorials.jenkov.com/java-multithreaded-servers/multithreaded-server.html)  
+[3. MultiThreaded server with Thread pool](http://tutorials.jenkov.com/java-multithreaded-servers/thread-pooled-server.html)  
 
 
 
